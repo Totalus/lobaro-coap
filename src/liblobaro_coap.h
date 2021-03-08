@@ -25,7 +25,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <sched.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
