@@ -2,7 +2,6 @@
 	Posix socket interface for lobaro-coap
 */
 
-//#include "../../liblobaro_coap.h"
 #include "../../coap.h"
 #include "socket_porting.h" // or <socket.h>
 
@@ -10,7 +9,7 @@
 // Send a packet to the network interface
 bool CoAP_Posix_SendDatagram(SocketHandle_t socketHandle, NetPacket_t *pckt)
 {
-	INFO("CoAP_Posix_SendDatagram called\n");
+	//INFO("CoAP_Posix_SendDatagram called\n");
 	int sock = (int)socketHandle;
 
 	// Format the endpoint info to the right structure
@@ -39,14 +38,14 @@ bool CoAP_Posix_SendDatagram(SocketHandle_t socketHandle, NetPacket_t *pckt)
 	}
 	else
 	{
-		INFO("[ERROR] Unsupported NetType : %d\n", pckt->remoteEp.NetType);
+		ERROR("Unsupported NetType : %d\n", pckt->remoteEp.NetType);
 		return false;
 	}
 
 	int ret = sendto(sock, pckt->pData, pckt->size, 0, &addr, sockaddrSize);
 
 	if(ret < 0)
-		INFO("[ERROR] sendto returned %d (errno = %d)", ret, errno);
+		ERROR("sendto() returned %d (errno = %d)\n", ret, errno);
 
 	return ret > 0;
 }
@@ -61,7 +60,7 @@ bool CoAP_Posix_CreateSocket(SocketHandle_t *handle, NetInterfaceType_t type)
 		int posixSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 		if(posixSocket < 0) {
-			INFO("Could not create socket, errno = %d", errno);
+			ERROR("Could not create socket, errno = %d", errno);
 			return false;
 		}
 
@@ -69,7 +68,7 @@ bool CoAP_Posix_CreateSocket(SocketHandle_t *handle, NetInterfaceType_t type)
 		CoAP_Socket_t *newSocket = AllocSocket();
 
 		if(newSocket == NULL) {
-			INFO("Could not allocate memory for new socket");
+			ERROR("Could not allocate memory for new socket");
 			close(socket);
 			return false;
 		}
@@ -81,7 +80,7 @@ bool CoAP_Posix_CreateSocket(SocketHandle_t *handle, NetInterfaceType_t type)
 		return true;
 	}
 	else {
-		INFO("[ERROR] Unsupported net type %d", type);
+		ERROR("Unsupported net type %d", type);
 	}
 	
 	return false;
