@@ -87,5 +87,16 @@ bool CoAP_Posix_CreateSocket(SocketHandle_t *handle, NetInterfaceType_t type)
 }
 
 
+void CoAP_Posix_CloseSocket(SocketHandle_t handle)
+{
+	CoAP_Socket_t* coapSocket = RetrieveSocket(handle);
+
+	if(coapSocket == NULL)
+		return;
+
+	close(coapSocket->Handle);
+	coapSocket->Alive = false;
+}
+
 
 
