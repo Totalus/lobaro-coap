@@ -3,7 +3,7 @@
 */
 
 #include "../../coap.h"
-#include "socket_porting.h" // or <socket.h>
+#include "SocketPorting.h" // or <socket.h>
 
 
 // Send a packet to the network interface
